@@ -1,8 +1,4 @@
-# donnees.py
 
-# -----------------------------
-# PERSONNAGES DISPONIBLES
-# -----------------------------
 personnages_disponibles = [
 
     {
@@ -109,9 +105,7 @@ personnages_disponibles = [
 
 nombre_personnages = len(personnages_disponibles)
 
-# -----------------------------
-# MONSTRES DISPONIBLES
-# -----------------------------
+
 monstres_disponibles = [
 
     {
@@ -217,3 +211,30 @@ monstres_disponibles = [
 ]
 
 nombre_monstres = len(monstres_disponibles)
+
+
+armes_disponibles = [
+    {"nom": "Épée courte", "degats": "1d6", "type": "tranchant", "utilisateurs": ["Guerrier", "Paladin", "Chevalier"]},
+    {"nom": "Épée longue", "degats": "1d8", "type": "tranchant", "utilisateurs": ["Guerrier", "Paladin", "Chevalier"]},
+    {"nom": "Hache", "degats": "1d8", "type": "tranchant", "utilisateurs": ["Barbare", "Guerrier"]},
+    {"nom": "Bâton", "degats": "1d6", "type": "magique", "utilisateurs": ["Mage", "Druide", "Nécromancien"]},
+    {"nom": "Arc", "degats": "1d6", "type": "perçant", "utilisateurs": ["Archer", "Voleur"]},
+    {"nom": "Dague", "degats": "1d4", "type": "perçant", "utilisateurs": ["Voleur", "Moine"]},
+    {"nom": "Marteau de guerre", "degats": "1d10", "type": "contondant", "utilisateurs": ["Paladin", "Chevalier"]},
+    {"nom": "Bâton de feu", "degats": "1d8", "type": "magique", "utilisateurs": ["Mage", "Druide"]},
+    {"nom": "Lance", "degats": "1d8", "type": "perçant", "utilisateurs": ["Guerrier", "Paladin"]},
+    {"nom": "Fléau", "degats": "1d8", "type": "contondant", "utilisateurs": ["Barbare", "Chevalier"]},
+]
+
+armes_monstres_disponibles = [
+    {"nom": "Cimeterre rouillé", "degats": "1d6", "type": "tranchant", "utilisateurs": ["Gobelin"]},
+    {"nom": "Crocs acérés", "degats": "1d6", "type": "perçant", "utilisateurs": ["Loup"]},
+    {"nom": "Venin d'araignée", "degats": "1d6", "type": "poison", "utilisateurs": ["Araignée géante"]},
+    {"nom": "Massue", "degats": "2d6", "type": "contondant", "utilisateurs": ["Troll"]},
+    {"nom": "Hache lourde", "degats": "2d4", "type": "tranchant", "utilisateurs": ["Orc"]},
+    {"nom": "Os tranchant", "degats": "1d6", "type": "perçant", "utilisateurs": ["Squelette"]},
+    {"nom": "Coup de poing zombie", "degats": "2d6", "type": "contondant", "utilisateurs": ["Zombie"]},
+    {"nom": "Poing de pierre", "degats": "2d8", "type": "contondant", "utilisateurs": ["Golem de pierre"]},
+    {"nom": "Flamme infernale", "degats": "3d6", "type": "feu", "utilisateurs": ["Démon"]},
+    {"nom": "Souffle de feu", "degats": "4d6", "type": "feu", "utilisateurs": ["Dragon"]},
+]
