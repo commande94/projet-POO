@@ -199,19 +199,27 @@ monstres_disponibles = [
     },
 
     {
-        "nom": "Dragon",
-        "pv": 80,
-        "defense": 18,
-        "type_degats": "feu",
-        "resistances": ["feu", "contondant"],
-        "description": "Créature légendaire extrêmement puissante.",
-        "pouvoir": "Souffle de feu : attaque massive infligeant des dégâts de feu."
-    }
-
+    "nom": "Momie",
+    "pv": 45,
+    "defense": 12,
+    "type_degats": "poison",
+    "resistances": ["poison"],
+    "description": "Ancienne créature maudite enveloppée de bandages, revenue d'entre les morts.",
+    "pouvoir": "Malédiction antique : inflige des dégâts et réduit la défense de la cible."
+}
 ]
 
 nombre_monstres = len(monstres_disponibles)
 
+boss = {
+    "nom": "Seigneur Dragon",
+    "pv": 140,
+    "defense": 24,
+    "type_degats": "feu",
+    "resistances": ["feu", "contondant"],
+    "description": "Un dragon ancestral extrêmement puissant, maître des flammes et de la destruction.",
+    "pouvoir": "Souffle infernal : inflige d'énormes dégâts de feu à tous les ennemis."
+}
 
 armes_disponibles = [
     {"nom": "Épée courte", "degats": "1d6", "type": "tranchant", "utilisateurs": ["Guerrier", "Paladin", "Chevalier"]},
@@ -236,5 +244,6 @@ armes_monstres_disponibles = [
     {"nom": "Coup de poing zombie", "degats": "2d6", "type": "contondant", "utilisateurs": ["Zombie"]},
     {"nom": "Poing de pierre", "degats": "2d8", "type": "contondant", "utilisateurs": ["Golem de pierre"]},
     {"nom": "Flamme infernale", "degats": "3d6", "type": "feu", "utilisateurs": ["Démon"]},
-    {"nom": "Souffle de feu", "degats": "4d6", "type": "feu", "utilisateurs": ["Dragon"]},
+    {"nom": "Toucher maudit", "degats": "2d8", "type": "poison", "utilisateurs": ["Momie"]
+},
 ]
