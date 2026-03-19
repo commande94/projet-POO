@@ -202,6 +202,7 @@ monstres_disponibles = [
         "description": "Créature légendaire extrêmement puissante.",
         "pouvoir": "Souffle de feu : attaque massive infligeant des dégâts de feu."
     }
+    
 ]
 nombre_monstres = len(monstres_disponibles)
 armes_disponibles = [
@@ -213,4 +214,40 @@ armes_disponibles = [
     {"nom": "Bâton", "degats": (1, 6), "type": "magique"},
     {"nom": "Massue", "degats": (1, 6), "type": "contondant"},
     {"nom": "Lance", "degats": (1, 8), "type": "perçant"},
+]
+
+
+boss_disponibles = [
+    {
+        "nom": "Dragon Noir",
+        "pv": 120,
+        "defense": 18,
+        "type_degats": "feu",
+        "degats": (3, 8),
+        "resistances": ["feu", "contondant"],
+        "description": "Un dragon légendaire qui crache du feu et peut voler.",
+        "peut_voler": True,
+        "chance_esquive": 0.3
+    },
+    {
+        "nom": "Géant de Pierre",
+        "pv": 150,
+        "defense": 20,
+        "type_degats": "contondant",
+        "degats": (2, 12),
+        "resistances": ["contondant", "tranchant"],
+        "description": "Un géant colossal fait de pierre vivante.",
+        "peut_voler": False
+    },
+    {
+        "nom": "Démon du Chaos",
+        "pv": 100,
+        "defense": 16,
+        "type_degats": "magique",
+        "degats": (2, 10),
+        "resistances": ["magique", "poison"],
+        "description": "Un démon venu des enfers.",
+        "peut_voler": True,
+        "chance_esquive": 0.2
+    }
 ]
