@@ -15,90 +15,8 @@ def afficher_accueil():
 def roll_dice(nb, faces):
     return sum(random.randint(1, faces) for _ in range(nb))
 
-class Creature:
-    def __init__(self, nom, description, pv, defense, type_degats):
-        self.nom = nom
-        self.description = description
-        self.pv_max = pv
-        self.pv_actuels = pv
-        self.defense = defense
-        self.type_degats = type_degats
-        self.initiative = 0
-        self.actions = []
-        self.etats = []
-    def lancer_initiative(self):
-        self.initiative = random.randint(1, 20)
-        return self.initiative
-    def est_en_vie(self):
-        return self.pv_actuels > 0
 
-class Personnage(Creature):
-    def __init__(self, nom, description, pv, defense, type_degats, arme):
-        super().__init__(nom, description, pv, defense, type_degats)
-        self.arme = arme
-        self.inventaire = []
-        self.actions.append(Attaque())
-        self.actions.append(Soin())
-        self.actions.append(Buff())
 
-class Monstre(Creature):
-    def __init__(self, nom, description, pv, defense, type_degats, resistances, degats):
-        super().__init__(nom, description, pv, defense, type_degats)
-        self.resistances = resistances
-        self.degats = degats
-        self.actions.append(Attaque())
-        self.actions.append(Soin())
-        self.actions.append(Buff())
-
-class Action:
-    def __init__(self, nom):
-        self.nom = nom
-    def executer(self, lanceur, cible):
-        pass
-
-class Attaque(Action):
-    def __init__(self):
-        super().__init__("Attaque")
-    def executer(self, lanceur, cible):
-        print(f"⚔️ {lanceur.nom} attaque {cible.nom} !")
-        jet = random.randint(1, 20)
-        print(f"Jet de touche : {jet} (défense cible {cible.defense})")
-        if jet == 1:
-            print("💀 Échec critique !")
-            dmg = roll_dice(*get_degat_dice(lanceur))
-            print(f"{lanceur.nom} s'inflige {dmg} dégâts.")
-            lanceur.pv_actuels -= dmg
-        elif jet > cible.defense:
-            crit = jet == 20
-            if crit:
-                print("✨ Réussite critique ! dégâts doublés")
-            dmg = roll_dice(*get_degat_dice(lanceur))
-            if crit:
-                dmg *= 2
-            if hasattr(cible, "resistances") and lanceur.type_degats in cible.resistances:
-                dmg = dmg // 2
-                print("Résistance détectée, dégâts divisés par 2")
-            cible.pv_actuels -= dmg
-            print(f"{cible.nom} subit {dmg} dégâts ({cible.pv_actuels}/{cible.pv_max} PV restants)")
-        else:
-            print("Manqué !")
-
-class Soin(Action):
-    def __init__(self):
-        super().__init__("Soin")
-    def executer(self, lanceur, cible):
-        so = roll_dice(2, 8)
-        cible.pv_actuels = min(cible.pv_actuels + so, cible.pv_max)
-        print(f"💊 {lanceur.nom} soigne {cible.nom} de {so} points ({cible.pv_actuels}/{cible.pv_max})")
-
-class Buff(Action):
-    def __init__(self):
-        super().__init__("Buff")
-    def executer(self, lanceur, cible):
-        bonus = 2
-        cible.defense += bonus
-        cible.etats.append(f"def+{bonus}")
-        print(f"💪 {lanceur.nom} augmente la défense de {cible.nom} de {bonus} (défense = {cible.defense})")
 
 def get_degat_dice(creature):
     if isinstance(creature, Personnage):
@@ -205,4 +123,3 @@ if __name__ == "__main__":
     heros = preparer_equipe()
     monstres = preparer_monstres()
     lancer_combat(heros, monstres)
-
