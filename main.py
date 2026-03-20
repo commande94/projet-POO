@@ -1,125 +1,169 @@
-import random
-from data import personnages_disponibles, monstres_disponibles, armes_disponibles
+from data import personnages_disponibles, monstres_disponibles, armes_disponibles, armes_monstres_disponibles, boss
+from creatures import Personnage, Monstre, Boss, Vol, LaPierre, Chaos
+from combat import creer_combatants, lancer_combat
 
 def afficher_accueil():
-    print("="*50)
-    print("      🛡️ RPG COMBAT SIMULATOR 🐉")
-    print("="*50)
-    print("\nBienvenue Maître du Jeu !\n")
-    print("Vous allez pouvoir créer votre équipe de héros,")
-    print("sélectionner vos monstres et lancer le combat.")
-    print("Chaque créature a ses points de vie, sa défense,")
-    print("son type de dégâts et ses pouvoirs spéciaux.\n")
-    print("="*50, "\n")
+    print("🌌" * 25)
+    print("        RPG COMBAT SIMULATOR")
+    print("🌌" * 25 + "\n")
+    
+    print("🔥 Bienvenue, Maître du Jeu !\n")
+    print("⚔️ Préparez vos héros courageux,")
+    print("👹 Sélectionnez des monstres redoutables,")
+    print("🏰 Lancez des combats épiques et légendaires !\n")
+    print("💥 Chaque créature a ses forces, faiblesses et pouvoirs spéciaux")
+    print("🌈 Que le destin guide vos héros vers la victoire !\n")
+    print("🌌" * 25 + "\n")
 
-def roll_dice(nb, faces):
-    return sum(random.randint(1, faces) for _ in range(nb))
+def afficher_heros():
+    print("\nHéros disponibles :\n")
+    for i, hero in enumerate(personnages_disponibles, 1):
+        print(f"{i} - {hero['nom']} {hero['pv']} PV | {hero['description']}")
+    print("\n")
 
+def afficher_monstres():
+    print("\nMonstres disponibles :\n")
+    for i, monstre in enumerate(monstres_disponibles, 1):
+        print(f"{i} - {monstre['nom']} {monstre['pv']} PV | {monstre['description']}")
+    print("\n")
 
-
-
-def get_degat_dice(creature):
-    if isinstance(creature, Personnage):
-        return creature.arme["degats"]
-    else:
-        return getattr(creature, "degats", (1, 6))
-
-def demander_nombre(msg):
+def selectionner_heros():
+    equipe = []
     while True:
         try:
-            n = int(input(msg))
-            if n >= 0:
-                return n
-        except:
-            pass
-
-def choisir_element(liste):
-    for i, obj in enumerate(liste, 1):
-        print(f"{i}. {obj['nom']} - {obj.get('description','')}")
-    while True:
-        sel = input("Choix : ")
-        if sel.isdigit():
-            idx = int(sel) - 1
-            if 0 <= idx < len(liste):
-                return liste[idx]
-        print("Sélection invalide")
-
-def preparer_equipe():
-    pers = []
-    compt = demander_nombre("Combien de personnages ? ")
-    for _ in range(compt):
-        base = choisir_element(personnages_disponibles)
-        arme = choisir_element(armes_disponibles)
-        p = Personnage(base["nom"], base["description"], base["pv"], base["defense"], base["type_degats"], arme)
-        if input("Modifier PV du personnage ? (o/n) ").lower() == "o":
-            pv = demander_nombre("Nouveaux PV max : ")
-            p.pv_max = pv
-            p.pv_actuels = pv
-        pers.append(p)
-    return pers
-
-def preparer_monstres():
-    mons = []
-    compt = demander_nombre("Combien de monstres ? ")
-    for _ in range(compt):
-        base = choisir_element(monstres_disponibles)
-        m = Monstre(base["nom"], base["description"], base["pv"], base["defense"], base["type_degats"], base["resistances"], base["degats"])
-        mons.append(m)
-    return mons
-
-def choisir_cible(action, lanceur, allies, enemies):
-    if isinstance(action, Attaque):
-        pool = enemies if isinstance(lanceur, Personnage) else allies
-    elif isinstance(action, Soin) or isinstance(action, Buff):
-        pool = allies if isinstance(lanceur, Personnage) else enemies
-    else:
-        pool = allies + enemies
-    pool = [c for c in pool if c.est_en_vie()]
-    for i, c in enumerate(pool, 1):
-        print(f"{i}. {c.nom} ({c.pv_actuels}/{c.pv_max} PV)")
-    idx = None
-    while idx is None:
-        sel = input("Cible : ")
-        if sel.isdigit():
-            i = int(sel) - 1
-            if 0 <= i < len(pool):
-                idx = i
-        if idx is None:
-            print("Option invalide")
-    return pool[idx]
-
-def lancer_combat(heros, monstres):
-    tous = heros + monstres
-    for c in tous:
-        c.lancer_initiative()
-    ordre = sorted(tous, key=lambda x: x.initiative, reverse=True)
-    while any(h.est_en_vie() for h in heros) and any(m.est_en_vie() for m in monstres):
-        for c in ordre:
-            if not c.est_en_vie():
-                continue
-            print(f"\n--- Tour de {c.nom} ---")
-            for idx, act in enumerate(c.actions, 1):
-                print(f"{idx}. {act.nom}")
-            choix = None
-            while choix is None:
-                sel = input("Action : ")
-                if sel.isdigit():
-                    i = int(sel) - 1
-                    if 0 <= i < len(c.actions):
-                        choix = c.actions[i]
-                if choix is None:
-                    print("Option invalide")
-            cible = choisir_cible(choix, c, heros, monstres)
-            choix.executer(c, cible)
-            if not any(m.est_en_vie() for m in monstres) or not any(h.est_en_vie() for h in heros):
+            nombre = int(input("\nCombien de héros participent au combat ? (1-10) : "))
+            if 1 <= nombre <= 10:
                 break
-    if any(h.est_en_vie() for h in heros):
-        print("\n🏆 Les héros ont gagné !")
-    else:
-        print("\n💀 Les monstres ont vaincu...")
+            print("❌ Veuillez entrer un nombre entre 1 et 10.\n")
+        except ValueError:
+            print("❌ Entrée invalide. Veuillez entrer un chiffre.\n")
+    
+    for i in range(nombre):
+        afficher_heros()
+        while True:
+            try:
+                choix = int(input(f"Choisissez le héros {i+1} : "))
+                if 1 <= choix <= len(personnages_disponibles):
+                    data = personnages_disponibles[choix-1]
+                    equipe.append(Personnage(
+                        data['nom'], data['description'], data['pv'],
+                        data['defense'], data['type_degats'], arme=None
+                    ))
+                    print(f"✅ {data['nom']} rejoint votre équipe !\n")
+                    break
+                print(f"⚠️ Choix invalide. Sélectionnez un numéro entre 1 et {len(personnages_disponibles)}.\n")
+            except ValueError:
+                print("❌ Entrée invalide. Veuillez entrer un chiffre.\n")
+    return equipe
+
+def selectionner_monstres():
+    groupe = []
+    while True:
+        try:
+            nombre = int(input("\nCombien de monstres attaqueront vos héros ? (1-10) : "))
+            if 1 <= nombre <= 10:
+                break
+            print("❌ Veuillez entrer un nombre entre 1 et 10.\n")
+        except ValueError:
+            print("❌ Entrée invalide. Veuillez entrer un chiffre.\n")
+    
+    for i in range(nombre):
+        afficher_monstres()
+        while True:
+            try:
+                choix = int(input(f"Choisissez le monstre {i+1} : "))
+                if 1 <= choix <= len(monstres_disponibles):
+                    data = monstres_disponibles[choix-1]
+                    groupe.append(Monstre(
+                        data['nom'], data['description'], data['pv'],
+                        data['defense'], data['type_degats'], degats=(1,6), resistances=[]
+                    ))
+                    print(f"{data['nom']} est prêt pour le combat !\n")
+                    break
+                print(f"⚠️ Numéro invalide. Choisissez entre 1 et {len(monstres_disponibles)}.\n")
+            except ValueError:
+                print("❌ Entrée invalide. Veuillez entrer un chiffre.\n")
+    return groupe
+
+def selectionner_boss():
+    print("\nSélection du Boss :\n")
+    for i, b in enumerate(boss, 1):
+        print(f"{i}. {b['nom']} {b['pv']} PV | Défense : {b['defense']} | {b['description']}\n")
+    
+    while True:
+        choix = input("Quel boss souhaitez-vous affronter ? (1-3) : ")
+        if choix.isdigit() and 1 <= int(choix) <= len(boss):
+            data = boss[int(choix)-1]
+            break
+        print("❌ Sélection invalide, veuillez entrer un numéro valide.\n")
+    
+    boss_creature = Boss(
+        nom=data["nom"], description=data["description"], pv=data["pv"],
+        defense=data["defense"], type_degats=data["type_degats"],
+        resistances=data.get("resistances", []),
+        degats=data.get("degats", (2,8)),
+        peut_voler=data.get("peut_voler", False),
+        chance_esquive=data.get("chance_esquive", 0.2)
+    )
+    boss_creature.en_vol = False
+    boss_creature.en_pierre = False
+    if data["nom"] == "Seigneur Dragon": boss_creature.actions.append(Vol())
+    elif data["nom"] == "Géant de Pierre": boss_creature.actions.append(LaPierre())
+    elif data["nom"] == "Démon du Chaos": boss_creature.actions.append(Chaos())
+    
+    print(f"\nLe boss {boss_creature.nom} est prêt ! ({boss_creature.pv_actuels}/{boss_creature.pv_max} PV)\n")
+    return boss_creature
+
+def choisir_arme_libre(creature, est_monstre=False):
+    armes = armes_monstres_disponibles if est_monstre else armes_disponibles
+    print(f"\nArmes disponibles pour {creature.nom} :\n")
+    for i, arme in enumerate(armes, 1):
+        utilisateurs = ", ".join(arme.get("utilisateurs", []))
+        print(f"{i} - {arme['nom']} ({arme['degats']} | {arme['type']}) | Pour : {utilisateurs}")
+    
+    while True:
+        try:
+            choix = int(input("Choisissez le numéro de l'arme : "))
+            if 1 <= choix <= len(armes):
+                creature.arme = armes[choix - 1]
+                print(f"{creature.nom} est maintenant équipé de {creature.arme['nom']} !\n")
+                break
+            print(f"⚠️ Entrez un nombre entre 1 et {len(armes)}.\n")
+        except ValueError:
+            print("❌ Entrée invalide. Veuillez entrer un chiffre.\n")
+
+def equiper_equipe_libre(equipe, est_monstre=False):
+    for creature in equipe:
+        choisir_arme_libre(creature, est_monstre)
+
+def preparation_combat():
+    print("\nPréparation du combat...\n")
+    heros = selectionner_heros()
+    monstres = selectionner_monstres()
+    boss_creature = selectionner_boss()
+
+    print("\nÉquipe de héros prête :\n")
+    for h in heros:
+        print(f"- {h.nom} | PV : {h.pv_actuels} | Défense : {h.defense}")
+    
+    print("\nMonstres prêts :\n")
+    for m in monstres:
+        print(f"- {m.nom} | PV : {m.pv_actuels} | Défense : {m.defense}")
+    
+    print("\nChoix des armes pour les héros :\n")
+    equiper_equipe_libre(heros)
+
+    print("\nChoix des armes pour les monstres :\n")
+    equiper_equipe_libre(monstres, est_monstre=True)
+
+    print("\nTout est prêt ! Que le combat commence !\n")
+    return heros, monstres, boss_creature
 
 if __name__ == "__main__":
     afficher_accueil()
-    heros = preparer_equipe()
-    monstres = preparer_monstres()
-    lancer_combat(heros, monstres)
+    try:
+        heros, monstres, boss_creature = preparation_combat()
+        lancer_combat(heros, monstres, boss_creature)
+    except Exception as e:
+        print(f"Une erreur est survenue pendant le jeu : {e}\n")
+        print("Redémarrez le jeu et tentez votre chance à nouveau.\n")

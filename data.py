@@ -1,3 +1,4 @@
+
 personnages_disponibles = [
     {
         "nom": "Guerrier",
@@ -101,6 +102,8 @@ personnages_disponibles = [
     }
 ]
 nombre_personnages = len(personnages_disponibles)
+
+
 monstres_disponibles = [
     {
         "nom": "Gobelin",
@@ -192,25 +195,78 @@ monstres_disponibles = [
         "description": "Créature infernale venue des profondeurs.",
         "pouvoir": "Flamme infernale : attaque magique de feu."
     },
+
     {
-        "nom": "Dragon",
-        "pv": 80,
-        "defense": 18,
+    "nom": "Momie",
+    "pv": 45,
+    "defense": 12,
+    "type_degats": "poison",
+    "resistances": ["poison"],
+    "description": "Ancienne créature maudite enveloppée de bandages, revenue d'entre les morts.",
+    "pouvoir": "Malédiction antique : inflige des dégâts et réduit la défense de la cible."
+}
+]
+
+nombre_monstres = len(monstres_disponibles)
+
+boss = [
+    {
+        "nom": "Seigneur Dragon",
+        "pv": 120,
+        "defense": 26,
         "type_degats": "feu",
         "degats": (3, 8),
         "resistances": ["feu", "contondant"],
-        "description": "Créature légendaire extrêmement puissante.",
-        "pouvoir": "Souffle de feu : attaque massive infligeant des dégâts de feu."
+        "description": "Un dragon légendaire qui crache du feu et peut voler.",
+        "peut_voler": True,
+        "chance_esquive": 0.3
+    },
+    {
+        "nom": "Géant de Pierre",
+        "pv": 150,
+        "defense": 30,
+        "type_degats": "contondant",
+        "degats": (2, 12),
+        "resistances": ["contondant", "tranchant"],
+        "description": "Un géant colossal fait de pierre vivante.",
+        "peut_voler": False
+    },
+    {
+        "nom": "Démon du Chaos",
+        "pv": 100,
+        "defense": 27,
+        "type_degats": "magique",
+        "degats": (2, 10),
+        "resistances": ["magique", "poison"],
+        "description": "Un démon venu des enfers.",
+        "peut_voler": True,
+        "chance_esquive": 0.2
     }
 ]
-nombre_monstres = len(monstres_disponibles)
+
 armes_disponibles = [
-    {"nom": "Épée courte", "degats": (1, 6), "type": "tranchant"},
-    {"nom": "Épée longue", "degats": (1, 8), "type": "tranchant"},
-    {"nom": "Hache", "degats": (1, 8), "type": "tranchant"},
-    {"nom": "Dague", "degats": (1, 4), "type": "perçant"},
-    {"nom": "Arc", "degats": (1, 8), "type": "perçant"},
-    {"nom": "Bâton", "degats": (1, 6), "type": "magique"},
-    {"nom": "Massue", "degats": (1, 6), "type": "contondant"},
-    {"nom": "Lance", "degats": (1, 8), "type": "perçant"},
+    {"nom": "Épée courte", "degats": "1d6", "type": "tranchant", "utilisateurs": ["Guerrier", "Paladin", "Chevalier"]},
+    {"nom": "Épée longue", "degats": "1d8", "type": "tranchant", "utilisateurs": ["Guerrier", "Paladin", "Chevalier"]},
+    {"nom": "Hache", "degats": "1d8", "type": "tranchant", "utilisateurs": ["Barbare", "Guerrier"]},
+    {"nom": "Bâton", "degats": "1d6", "type": "magique", "utilisateurs": ["Mage", "Druide", "Nécromancien"]},
+    {"nom": "Arc", "degats": "1d6", "type": "perçant", "utilisateurs": ["Archer", "Voleur"]},
+    {"nom": "Dague", "degats": "1d4", "type": "perçant", "utilisateurs": ["Voleur", "Moine"]},
+    {"nom": "Marteau de guerre", "degats": "1d10", "type": "contondant", "utilisateurs": ["Paladin", "Chevalier"]},
+    {"nom": "Bâton de feu", "degats": "1d8", "type": "magique", "utilisateurs": ["Mage", "Druide"]},
+    {"nom": "Lance", "degats": "1d8", "type": "perçant", "utilisateurs": ["Guerrier", "Paladin"]},
+    {"nom": "Fléau", "degats": "1d8", "type": "contondant", "utilisateurs": ["Barbare", "Chevalier"]},
+]
+
+armes_monstres_disponibles = [
+    {"nom": "Cimeterre rouillé", "degats": "1d6", "type": "tranchant", "utilisateurs": ["Gobelin"]},
+    {"nom": "Crocs acérés", "degats": "1d6", "type": "perçant", "utilisateurs": ["Loup"]},
+    {"nom": "Venin d'araignée", "degats": "1d6", "type": "poison", "utilisateurs": ["Araignée géante"]},
+    {"nom": "Massue", "degats": "2d6", "type": "contondant", "utilisateurs": ["Troll"]},
+    {"nom": "Hache lourde", "degats": "2d4", "type": "tranchant", "utilisateurs": ["Orc"]},
+    {"nom": "Os tranchant", "degats": "1d6", "type": "perçant", "utilisateurs": ["Squelette"]},
+    {"nom": "Coup de poing zombie", "degats": "2d6", "type": "contondant", "utilisateurs": ["Zombie"]},
+    {"nom": "Poing de pierre", "degats": "2d8", "type": "contondant", "utilisateurs": ["Golem de pierre"]},
+    {"nom": "Flamme infernale", "degats": "3d6", "type": "feu", "utilisateurs": ["Démon"]},
+    {"nom": "Toucher maudit", "degats": "2d8", "type": "poison", "utilisateurs": ["Momie"]
+},
 ]
