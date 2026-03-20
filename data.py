@@ -211,15 +211,40 @@ monstres_disponibles = [
 
 nombre_monstres = len(monstres_disponibles)
 
-boss = {
-    "nom": "Seigneur Dragon",
-    "pv": 140,
-    "defense": 24,
-    "type_degats": "feu",
-    "resistances": ["feu", "contondant"],
-    "description": "Un dragon ancestral extrêmement puissant, maître des flammes et de la destruction.",
-    "pouvoir": "Souffle infernal : inflige d'énormes dégâts de feu à tous les ennemis."
-}
+boss = [
+    {
+        "nom": "Seigneur Dragon",
+        "pv": 120,
+        "defense": 26,
+        "type_degats": "feu",
+        "degats": (3, 8),
+        "resistances": ["feu", "contondant"],
+        "description": "Un dragon légendaire qui crache du feu et peut voler.",
+        "peut_voler": True,
+        "chance_esquive": 0.3
+    },
+    {
+        "nom": "Géant de Pierre",
+        "pv": 150,
+        "defense": 30,
+        "type_degats": "contondant",
+        "degats": (2, 12),
+        "resistances": ["contondant", "tranchant"],
+        "description": "Un géant colossal fait de pierre vivante.",
+        "peut_voler": False
+    },
+    {
+        "nom": "Démon du Chaos",
+        "pv": 100,
+        "defense": 27,
+        "type_degats": "magique",
+        "degats": (2, 10),
+        "resistances": ["magique", "poison"],
+        "description": "Un démon venu des enfers.",
+        "peut_voler": True,
+        "chance_esquive": 0.2
+    }
+]
 
 armes_disponibles = [
     {"nom": "Épée courte", "degats": "1d6", "type": "tranchant", "utilisateurs": ["Guerrier", "Paladin", "Chevalier"]},

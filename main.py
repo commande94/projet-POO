@@ -32,7 +32,14 @@ def selectionner_heros():
         afficher_heros()
         choix = int(input(f"\nChoisir le héros {i+1} : "))
         data = personnages_disponibles[choix-1]
-        equipe.append(Personnage(data['nom'], data['description'], data['pv'], data['defense'], data['type_degats']))
+        equipe.append(Personnage(
+    data['nom'],
+    data['description'],
+    data['pv'],
+    data['defense'],
+    data['type_degats'],
+    arme=None  
+))
     return equipe
 
 def selectionner_monstres():
@@ -42,9 +49,42 @@ def selectionner_monstres():
         afficher_monstres()
         choix = int(input(f"\nChoisir le monstre {i+1} : "))
         data = monstres_disponibles[choix-1]
-        groupe.append(Monstre(data['nom'], data['description'], data['pv'], data['defense'], data['type_degats']))
+        groupe.append(Monstre(data['nom'], data['description'], data['pv'], data['defense'], data['type_degats'], degats=(1,6), resistances=[]))
     return groupe
 
+from creatures import Boss
+from data import boss  # la liste des boss disponibles
+
+def selectionner_boss():
+    print("\n=== Sélection du Boss ===\n")
+    for i, b in enumerate(boss, 1):
+        print(f"{i}. {b['nom']} ({b['pv']} PV, Défense: {b['defense']}) - {b['description']}")
+    
+    while True:
+        choix = input("\nQuel boss voulez-vous affronter ? (entrez le numéro) : ")
+        if choix.isdigit() and 1 <= int(choix) <= len(boss):
+            data = boss[int(choix)-1]
+            break
+        print("Sélection invalide, réessayez.")
+
+    # Création de l'objet Boss
+    boss_creature = Boss(
+        nom=data["nom"],
+        description=data["description"],
+        pv=data["pv"],
+        defense=data["defense"],
+        type_degats=data["type_degats"],
+        resistances=data.get("resistances", []),
+        degats=data.get("degats", (1,6)),
+        peut_voler=data.get("peut_voler", False),
+        chance_esquive=data.get("chance_esquive", 0.2)
+    )
+
+    print(f"\n👑 Boss choisi : {boss_creature.nom} ({boss_creature.pv_actuels}/{boss_creature.pv_max} PV)")
+    if boss_creature.peut_voler:
+        print(f"🦅 Peut voler - chance d'esquive : {boss_creature.chance_esquive*100}%")
+    
+    return boss_creature
 
 def choisir_arme_libre(creature, est_monstre=False):
     """Permet au MJ de choisir n'importe quelle arme pour une créature."""
@@ -83,7 +123,7 @@ def preparation_combat():
 
     heros = selectionner_heros()
     monstres = selectionner_monstres()
-
+    boss_creature = selectionner_boss()
 
     print("\n--- Héros sélectionnés ---")
     for h in heros:
@@ -94,6 +134,8 @@ def preparation_combat():
     for m in monstres:
         print(f"- {m.nom} ({m.pv_actuels} PV | Défense : {m.defense}) - {m.description}")
 
+    print("\n--- Boss sélectionné ---")
+    print(f"- {boss_creature.nom} ({boss_creature.pv_actuels} PV | Défense : {boss_creature.defense}) - {boss_creature.description}")
 
     print("\n--- Choix des armes pour les héros ---")
     equiper_equipe_libre(heros)
@@ -101,20 +143,6 @@ def preparation_combat():
     print("\n--- Choix des armes pour les monstres ---")
     equiper_equipe_libre(monstres, est_monstre=True)
 
-
-    print("\n--- Choix d'arme pour le boss ---")
-    boss_creature = Monstre(
-        boss['nom'],
-        boss['description'],
-        boss['pv'],
-        boss['defense'],
-        boss['type_degats'],
-        resistances=boss['resistances']
-    )
-    print(f"\nBoss sélectionné : {boss_creature.nom} ({boss_creature.pv_actuels} PV | Défense : {boss_creature.defense}) - {boss_creature.description}")
-    choisir_arme_libre(boss_creature, est_monstre=True)
-
-  
     print("\nÉquipe de héros prête :")
     for h in heros:
         print(f"- {h.nom} | Arme : {h.arme['nom']}")
@@ -124,7 +152,7 @@ def preparation_combat():
         print(f"- {m.nom} | Arme : {m.arme['nom']}")
 
     print("\nBoss prêt :")
-    print(f"- {boss_creature.nom} | Arme : {boss_creature.arme['nom']}")
+    print(f"- {boss_creature.nom}")
 
     return heros, monstres, boss_creature
 
@@ -135,3 +163,4 @@ if __name__ == "__main__":
     lancer_initiatives(combatants)
     trier_initiative(combatants)
     afficher_ordre(combatants)
+
