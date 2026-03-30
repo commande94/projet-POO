@@ -139,15 +139,17 @@ class Arene:
         return 0
 
 def afficher_accueil():
-    print("="*50)
-    print("      🛡️ RPG COMBAT SIMULATOR 🐉")
-    print("="*50)
-    print("\nBienvenue Maître du Jeu !\n")
-    print("Vous allez pouvoir créer votre équipe de héros,")
-    print("sélectionner vos monstres et lancer le combat.")
-    print("Chaque créature a ses points de vie, sa défense,")
-    print("son type de dégâts et ses pouvoirs spéciaux.\n")
-    print("="*50, "\n")
+    print("🌌" * 25)
+    print("        RPG COMBAT SIMULATOR")
+    print("🌌" * 25 + "\n")
+    
+    print("🔥 Bienvenue, Maître du Jeu !\n")
+    print("⚔️ Préparez vos héros courageux,")
+    print("👹 Sélectionnez des monstres redoutables,")
+    print("🏰 Lancez des combats épiques et légendaires !\n")
+    print("💥 Chaque créature a ses forces, faiblesses et pouvoirs spéciaux")
+    print("🌈 Que le destin guide vos héros vers la victoire !\n")
+    print("🌌" * 25 + "\n")
 
 def roll_dice(nb, faces):
     return sum(random.randint(1, faces) for _ in range(nb))

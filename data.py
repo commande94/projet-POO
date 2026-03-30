@@ -1,3 +1,4 @@
+
 personnages_disponibles = [
     {
         "nom": "Guerrier",
@@ -101,6 +102,8 @@ personnages_disponibles = [
     }
 ]
 nombre_personnages = len(personnages_disponibles)
+
+
 monstres_disponibles = [
     {
         "nom": "Gobelin",
@@ -192,10 +195,25 @@ monstres_disponibles = [
         "description": "Créature infernale venue des profondeurs.",
         "pouvoir": "Flamme infernale : attaque magique de feu."
     },
+
     {
-        "nom": "Dragon",
-        "pv": 80,
-        "defense": 18,
+    "nom": "Momie",
+    "pv": 45,
+    "defense": 12,
+    "type_degats": "poison",
+    "resistances": ["poison"],
+    "description": "Ancienne créature maudite enveloppée de bandages, revenue d'entre les morts.",
+    "pouvoir": "Malédiction antique : inflige des dégâts et réduit la défense de la cible."
+}
+]
+
+nombre_monstres = len(monstres_disponibles)
+
+boss = [
+    {
+        "nom": "Seigneur Dragon",
+        "pv": 120,
+        "defense": 26,
         "type_degats": "feu",
         "degats": (3, 8),
         "resistances": ["feu", "contondant"],
